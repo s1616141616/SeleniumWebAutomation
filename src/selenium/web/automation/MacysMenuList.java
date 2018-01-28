@@ -10,9 +10,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
-public class MouseHover {
+public class MacysMenuList {
 
 	public static void main(String[] args) throws Exception {
+
 		System.setProperty("webdriver.chrome.driver", "D:\\eclipse-workspace\\Practice\\chromedriver.exe");
 
 		ChromeOptions chromeOptions = new ChromeOptions();
@@ -24,29 +25,26 @@ public class MouseHover {
 		driver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS); // for page loading
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);// for element loading
 
-		driver.get("https://www.viasat.com/");
+		driver.get("https://www.macys.com/");
+
+		// this to close temporary pop-up window! can ignore if pop-up dosen't exist :)
+		driver.findElement(By.xpath(".//*[@id='closeIcon']")).click();
 
 		Actions action = new Actions(driver);
+		action.moveToElement(driver.findElement(By.xpath("//*[@id=\"flexid_22672\"]/a/span"))).build().perform();
 
-		action.moveToElement(driver.findElement(
-				By.xpath("//a[@href='/services-systems'" + " and @class='sf-depth-1 menuparent sf-with-ul']"))).build()
-				.perform();
-
-		List<WebElement> list = driver
-				.findElements(By.xpath("//div[@class='sf-megamenu-column']//a[@class='sf-depth-2 menuparent']"));
+		List <WebElement> list = driver.findElements(By.xpath("//ul[@class='flexLabelLinksContainer']"));
 		System.out.println(list.size());
 
 		for (WebElement element : list) {
-			// System.out.println(element.getText());
-			System.out.println(element.getAttribute("href"));
+			 System.out.printf(element.getText().trim());
+			//System.out.println(element.getText().trim());
 		}
-
+		
+		driver.findElement(By.xpath("//*[@id=\"mainNavigationFlyouts\"]/div[3]/div[2]/ul[1]/li[8]/a")).click();
+		
 		Thread.sleep(3000);
-
-		driver.findElement(By.xpath("//a[@href='/services/business'" + " and @class='column-2-wide sf-depth-3']"))
-				.click();
-
-		Thread.sleep(5000);
+		
 		driver.quit();
 	}
 }
